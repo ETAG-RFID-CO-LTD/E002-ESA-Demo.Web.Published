@@ -1,0 +1,228 @@
+﻿@using System.Configuration;
+@using EagleServicesWebApp.Components;
+@{
+    ViewBag.Title = "RFID Asset Management System";
+    Layout = "~/Views/Shared/Layout.cshtml";
+    List<EagleServicesWebApp.Models.Main.Engine> EngineData = ViewData["EngineData"] as List<EagleServicesWebApp.Models.Main.Engine>;
+}
+<style>
+    a, a:link, a:visited {
+        color: white;
+        text-decoration: none;
+    }
+</style>
+<div class="m-portlet m-portlet--tab">
+    <div class="m-portlet__head" style="background-color :#337ab7">
+        <div class="m-portlet__head-caption">
+            <div class="m-portlet__head-title">
+                <span class="m-portlet__head-icon">
+                    <i class="flaticon-technology m--font-brand"></i>
+                </span>
+                <h3 class="m-portlet__head-text m--font-brand">
+                    Dashboard
+                </h3>
+            </div>
+        </div>
+        <div class="m-portlet__head-tools">
+            <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
+                <h3 class="m-portlet__head-text m--font-brand">@TimeZoneInfo.ConvertTimeBySystemTimeZoneId(DateTime.UtcNow, "Myanmar Standard Time").ToString("dd-MMM-yyyy HH:mm")</h3>
+            </div>
+        </div>
+    </div>
+    <p class="row"></p>
+    <div id="form-panel" class="panel-body" data-loading-overlay="">
+        <div class="form-group m-form__group row">
+            @if (EngineData != null)
+            {
+                <div class="col-md-3">
+                    @*<div style="margin-top: 10px; margin-left: 5px; cursor: pointer;width: 15%">*@
+                    <section class="panel">
+                        <div class="panel-body bg-success" style="background: #bde53c;">
+                            <div class="widget-summary">
+                                <div class="widget-summary-col">
+                                    <div class="summary">
+                                        <div style="padding: 8px 5px 5px">
+                                            <h4 class="title" style="color:white;font-size: 1.5rem;text-transform:uppercase;">
+                                                @EngineData[0].EngineName
+                                                <span style="margin-right:100px;"></span>
+                                                <a class='k-button k-detail' style="color:darkblue;"><span class='k-icon k-i-align-justify' onclick='DetailEngine("@EngineData[0].EngineID")'></span></a>
+                                                <a class='k-button' style="color:darkblue;"><span class='k-icon k-i-reset-sm' onclick='RestEngine("@EngineData[0].EngineID")'></span></a>
+                                            </h4>
+                                            <div class="info">
+                                                @if (EngineData[0].EngineID != 0)
+                                                {
+                                                    EagleServicesWebApp.Models.Main.MainModel model = new EagleServicesWebApp.Models.Main.MainModel();
+                                                    List<EagleServicesWebApp.Models.Main.Dashboard_REC> data = model.GetDashboardData(EngineData[0].EngineID).ToList();
+                                                    if (data != null)
+                                                    {
+                                                        <strong style="color:white;font-size: 1.6rem;font-weight:600;">
+                                                            Outstanding module : <span>@data[0].OutModule </span>
+                                                        </strong>
+                                                        <strong style="color:white;font-size: 1.6rem;font-weight:600;" >
+                                                            Outstanding part : @data[0].OutPart
+                                                        </strong>
+                                                        <strong style="color:white;font-size: 1.6rem;font-weight:600;" >
+                                                            Outstanding critical part : @data[0].OutCritical
+                                                        </strong>
+                                                        <p style="color:white;font-size: 1.2rem;font-weight:600;padding-top:10px" >
+                                                            Status : @data[0].LastProcessStatus
+                                                        </p>
+                                                        <strong style="color:white;font-size: 1.6rem;font-weight:600;">
+                                                            Overall Completion : @data[0].OverallCompletion %
+                                                        </strong>
+                                                    }
+                                                }
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                    @*</div>*@
+                </div>
+                <div class="col-md-3">
+                    <section class="panel">
+                        <div class="panel-body bg-primary">
+                            <div class="widget-summary">
+                                <div class="widget-summary-col">
+                                    <div class="summary">
+                                        <div style="padding: 8px 5px 5px">
+                                            <h4 class="title" style="color:white;font-size: 1.5rem;text-transform:uppercase;">
+                                                @EngineData[1].EngineName
+                                                <span style="margin-right:100px;"></span>
+                                                <a class='k-button k-detail' style="color:darkblue;"><span class='k-icon k-i-align-justify' onclick='DetailEngine("@EngineData[1].EngineID")'></span></a>
+                                                <a class='k-button' style="color:darkblue;"><span class='k-icon k-i-reset-sm' onclick='RestEngine("@EngineData[1].EngineID")'></span></a>
+                                            </h4>
+                                            <div class="info">
+                                                @if (EngineData[1].EngineID != 0)
+                                                {
+                                                    EagleServicesWebApp.Models.Main.MainModel model = new EagleServicesWebApp.Models.Main.MainModel();
+                                                    List<EagleServicesWebApp.Models.Main.Dashboard_REC> data = model.GetDashboardData(EngineData[1].EngineID).ToList();
+                                                    if (data != null)
+                                                    {
+                                                        <strong style="color:white;font-size: 1.6rem;font-weight:600;" >
+                                                            Outstanding module : <span>@data[0].OutModule </span>
+                                                        </strong>
+                                                        <strong style="color:white;font-size: 1.6rem;font-weight:600;">
+                                                            Outstanding part : @data[0].OutPart
+                                                        </strong>
+                                                        <strong style="color:white;font-size: 1.6rem;font-weight:600;">
+                                                            Outstanding critical part : @data[0].OutCritical
+                                                        </strong>
+                                                        <p style="color:white;font-size: 1.2rem;font-weight:600;padding-top:10px">
+                                                            Status : @data[0].LastProcessStatus
+                                                        </p>
+                                                        <strong style="color:white;font-size: 1.6rem;font-weight:600;">
+                                                            Overall Completion : @data[0].OverallCompletion %
+                                                        </strong>
+                                                    }
+                                                }
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+                <div class="col-md-3">
+                    <section class="panel">
+                        <div class="panel-body bg-warning">
+                            <div class="widget-summary">
+                                <div class="widget-summary-col">
+                                    <div class="summary" style="height:203px">
+                                        <div style="padding: 8px 5px 5px">
+                                            <h4 class="title" style="color:white;font-size: 1.5rem;text-transform:uppercase;">Enigne 003</h4>
+                                            <div class="info">
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+                <div class="col-md-3">
+                    <section class="panel">
+                        <div class="panel-body" style="background-color: #FC6140;">
+                            <div class="widget-summary">
+                                <div class="widget-summary-col">
+                                    <div class="summary" style="height:203px">
+                                        <div style="padding: 8px 5px 5px">
+                                            <h4 class="title" style="color:white;font-size: 1.5rem;text-transform:uppercase;">Enigne 004</h4>
+                                            <div class="info">
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            }
+            else
+            {
+                <p>Not To Show</p>
+            }
+        </div>
+    </div>
+</div>
+<script>
+     function DetailEngine(EnNo) {
+        var test = EnNo;
+        var vData = JSON.stringify(test);
+         var url =  '@Url.Action("Module", "Main")?engine=' + EnNo.trim();
+        window.location.href = url;
+    }
+    function RestEngine(EnNo) {
+        var voData = {
+            engID: EnNo
+        };
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("ResetData", "Main")',
+            data: JSON.stringify(voData),
+            dataType: 'json',
+            contentType: 'application/json; charset=utf-8',
+            success: function (data) {
+                if (data.result) {
+                    window.location.reload();
+                } else {
+                    setNotification("Warning", "Fail Reset", 'danger');
+                }
+            },
+            error: function (error) {
+                setNotification("Reset Error!!", error, 'danger');
+            }
+        });
+    }
+</script>
+@*<script>
+        $(document).ready(function () {
+            var link_temprowDeleteByID = "@Url.Action("Outstanding_Read", "Dashboard")";
+            function getAllEmployees() {
+                $.ajax({
+                    url: link_temprowDeleteByID,
+                    dataType: "json",
+                    data: { engine: $("#drop2").val() },
+                    success: function (data) {
+                        var outstandingData = $('#emp');
+                        employeeTable.empty();
+
+                        $(data).each(function (index, emp) {
+                            outstandingData.append('<strong style="color:white;font-size: 1.6rem;font-weight:600;" id="TotalStockIn">' + emp.ID + '</strong>'
+                                + '<strong style="color:white;font-size: 1.6rem;font-weight:600;" id="TotalStockIn">' + emp.ID + '</strong>'
+                                + '<strong style="color:white;font-size: 1.6rem;font-weight:600;" id="TotalStockIn">' + emp.ID + '</strong>'
+                                + '<strong style="color:white;font-size: 1.6rem;font-weight:600;" id="TotalStockIn">' + emp.ID + '</strong>');
+                        });
+                    },
+                    error: function (err) {
+                        console.log(err);
+                    }
+                });
+            }
+        });
+    </script>*@
